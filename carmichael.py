@@ -10,13 +10,13 @@ from bluetooth import *
 def init():
     gpio.setmode(gpio.BOARD)
     gpio.setwarnings(False) 
-    gpio.setup(15, gpio.OUT, initial = 0) # H bridge IN1
-    gpio.setup(13, gpio.OUT, initial = 0) # H bridge IN2
-    gpio.setup(11, gpio.OUT, initial = 0) # H bridge IN3
-    gpio.setup(12, gpio.OUT, initial = 0) # H bridge IN4
-    gpio.setup(3, gpio.OUT, initial = 0) # Ultra sonic sensor out
-    gpio.setup(7, gpio.IN) # Ultra sonic sensor in
-    gpio.setup(16, gpio.OUT) # Piezo buzzer
+    gpio.setup(37, gpio.OUT, initial = 0) # H bridge IN1. Var forut 15
+    gpio.setup(35, gpio.OUT, initial = 0) # H bridge IN2. Var forut 13.
+    gpio.setup(33, gpio.OUT, initial = 0) # H bridge IN3. Var forut 11.
+    gpio.setup(31, gpio.OUT, initial = 0) # H bridge IN4. Var forut 12.
+    gpio.setup(38, gpio.OUT, initial = 0) # Ultra sonic sensor out. Var forut 3.
+    gpio.setup(36, gpio.IN) # Ultra sonic sensor in. Var forut 7.
+    gpio.setup(32, gpio.OUT) # Piezo buzzer. Var forut 16.
 
     # Motors init
     global duty_cycle
@@ -27,11 +27,11 @@ def init():
     global p13
     global p15
     global p16 # Piezo buzzer
-    p11 = gpio.PWM(11, freq)
-    p12 = gpio.PWM(12, freq)
-    p13 = gpio.PWM(13, freq)
-    p15 = gpio.PWM(15, freq)
-    p16 = gpio.PWM(16, 100)
+    p11 = gpio.PWM(33, freq)
+    p12 = gpio.PWM(31, freq)
+    p13 = gpio.PWM(35, freq)
+    p15 = gpio.PWM(37, freq)
+    p16 = gpio.PWM(32, 100)
 
     # Notes
     global NOTE_B0
@@ -234,7 +234,7 @@ def autonomy():
 	#time.sleep(0.1)
 	#print("Setting buzzer to LOW")
 	#gpio.output(16, gpio.LOW)
-	gpio.output(16, True) 
+	gpio.output(32, True) 
 	buzzer_speed = 0.2
 	p16.start(10) # 10% duty cycle sounds 'ok'
 	p16.ChangeFrequency(200)
@@ -259,15 +259,17 @@ def autonomy():
 def distance(measure='cm'):
 	sig = 0
 	nosig = 0
-
-	gpio.output(3, True)
-        gpio.output(3, False)
-	while gpio.input(7) == 0:
+        print("1")
+	gpio.output(38, True)
+        print("2")
+        gpio.output(38, False)
+        print("3")
+	while gpio.input(36) == 0:
 		nosig = time.time()
-
-	while gpio.input(7) == 1:
+        print("4")
+	while gpio.input(36) == 1:
 		sig = time.time()
-
+        print("5")
 	tl = sig - nosig
 
 	if measure == 'cm':
@@ -383,6 +385,7 @@ def main():
 
         # The service UUID to advertise
         uuid = "7be1fcb3-5776-42fb-91fd-2ee7b5bbb86d"
+        #uuid = "29075e46-f0d4-44e2-a9e7-55ac02d6e6cc"
 
         # Start advertising the service
         advertise_service(server_sock, "RaspiBtSrv",
@@ -396,7 +399,7 @@ def main():
                 init()
 
                 # Startup completed sound
-                gpio.output(16, True)
+                gpio.output(32, True)
             	buzzer_speed = 0.2
                 p16.start(10)
                 p16.ChangeFrequency(NOTE_E6)
@@ -424,7 +427,7 @@ def main():
                         print "Accepted connection from ", client_info
 
                         # Blutetooth connected sound
-	                gpio.output(16, True) 
+	                gpio.output(32, True) 
             	        buzzer_speed = 0.2
                 	p16.start(10)
                 	p16.ChangeFrequency(NOTE_A5)
