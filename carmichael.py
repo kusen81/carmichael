@@ -13,7 +13,7 @@ def init():
     gpio.setup(37, gpio.OUT, initial = 0) # H bridge IN1. Var forut 15
     gpio.setup(35, gpio.OUT, initial = 0) # H bridge IN2. Var forut 13.
     gpio.setup(33, gpio.OUT, initial = 0) # H bridge IN3. Var forut 11.
-    gpio.setup(31, gpio.OUT, initial = 0) # H bridge IN4. Var forut 12.
+    gpio.setup(23, gpio.OUT, initial = 0) # H bridge IN4. Var forut 12.
     gpio.setup(38, gpio.OUT, initial = 0) # Ultra sonic sensor out. Var forut 3.
     gpio.setup(36, gpio.IN) # Ultra sonic sensor in. Var forut 7.
     gpio.setup(32, gpio.OUT) # Piezo buzzer. Var forut 16.
@@ -28,7 +28,7 @@ def init():
     global p15
     global p16 # Piezo buzzer
     p11 = gpio.PWM(33, freq)
-    p12 = gpio.PWM(31, freq)
+    p12 = gpio.PWM(23, freq)
     p13 = gpio.PWM(35, freq)
     p15 = gpio.PWM(37, freq)
     p16 = gpio.PWM(32, 100)
@@ -384,8 +384,11 @@ def main():
         port = server_sock.getsockname()[1]
 
         # The service UUID to advertise
-        uuid = "7be1fcb3-5776-42fb-91fd-2ee7b5bbb86d"
+        #uuid = "7be1fcb3-5776-42fb-91fd-2ee7b5bbb86f"
+        #uuid = "7be1fcb3-5776-42fb-91fd-2ee7b5bbb86e"
+        #uuid = "7be1fcb3-5776-42fb-91fd-2ee7b5bbb86d"
         #uuid = "29075e46-f0d4-44e2-a9e7-55ac02d6e6cc"
+        uuid = "00001101-0000-1000-8000-00805F9B34FB"
 
         # Start advertising the service
         advertise_service(server_sock, "RaspiBtSrv",
